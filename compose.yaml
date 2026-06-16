@@ -1,0 +1,6 @@
+services:
+  aerogridproject:
+    image: aerogridproject
+    build:
+      context: .
+      dockerfile: ./Dockerfile
