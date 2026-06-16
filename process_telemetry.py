@@ -44,9 +44,10 @@ data_T07 = df[boolean_T07]
 data_T08 = df[boolean_T08]
 data_T09 = df[boolean_T09]
 #This creates separate DataFrames for each turbine by applying the boolean masks to the original DataFrame. Each new DataFrame contains only the data for the corresponding turbine ID.
+data_list = [data_T01, data_T02, data_T03, data_T04, data_T05, data_T06, data_T07, data_T08, data_T09]
 
 av_temp_list = []
-for data in [data_T01, data_T02, data_T03, data_T04, data_T05, data_T06, data_T07, data_T08, data_T09]:
+for data in data_list:
     avg_temp = data['temperature_c'].mean()
     av_temp_list.append(avg_temp)
 
@@ -54,7 +55,7 @@ for data in [data_T01, data_T02, data_T03, data_T04, data_T05, data_T06, data_T0
 
 
 max_vib_list = []
-for data in [data_T01, data_T02, data_T03, data_T04, data_T05, data_T06, data_T07, data_T08, data_T09]:
+for data in data_list:
     max_vib = data['vibration_mm_s'].max()
     max_vib_list.append(max_vib)
 #This loop iterates over the list of turbine DataFrames, calculates the maximum vibration for each turbine, and appends it to the max_vib_list.
@@ -94,6 +95,52 @@ data_report = pd.DataFrame({
 data_report.to_csv('telemetry_report.csv', index=False)
 
 #This creates a new DataFrame called data_report that contains the turbine IDs, average temperatures, maximum vibrations, and alert statuses for temperature and vibration. It then saves this DataFrame to a CSV file named 'telemetry_report.csv' without including the index column.
+
+
+def Temp_Time_Plot(data,i):
+    avg_temp = data['temperature_c'].mean()
+    max_temp = data['temperature_c'].max()
+    #This defines a function called Temp_Time_Plot that takes a DataFrame (data) as input. It calculates the average and maximum temperatures from the 'temperature_c' column of the input DataFrame.
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(data['timestamp'], data['temperature_c'], label='Temperature (°C)', color='blue')
+    plt.axhline(y=avg_temp, color='orange', linestyle='--', label=f'Average Temp: {avg_temp:.2f} °C')
+    plt.axhline(y=max_temp, color='red', linestyle='--', label=f'Max Temp: {max_temp:.2f} °C')
+    plt.title(f'Temperature vs Time, Turbine ID: {i}  ')
+    plt.xlabel('Timestamp')
+    plt.ylabel('Temperature (°C)')
+    plt.legend()
+    plt.grid()
+    plt.savefig(f'Temperature_Time_Plot_{i}.png')
+    plt.close()
+    #This part of the function creates a line plot of temperature over time, adds horizontal lines for average and maximum temperatures, and saves the plot as a PNG file named 'Temperature_Time_Plot_{i}.png', where {i} is the index of the turbine.
+
+def Vib_Time_Plot(data,i):
+    max_vib = data['vibration_mm_s'].max()
+    #This defines a function called Vib_Time_Plot that takes a DataFrame (data) as input. It calculates the maximum vibration from the 'vibration_mm_s' column of the input DataFrame.
+
+    plt.figure(figsize=(10, 6))
+    plt.plot(data['timestamp'], data['vibration_mm_s'], label='Vibration (mm/s)', color='green')
+    plt.axhline(y=max_vib, color='red', linestyle='--', label=f'Max Vibration: {max_vib:.2f} mm/s')
+    plt.title(f'Vibration vs Time, Turbine ID: {i+1}')
+    plt.xlabel('Timestamp')
+    plt.ylabel('Vibration (mm/s)')
+    plt.legend()
+    plt.grid()
+    plt.savefig(f'Vibration_Time_Plot_{i+1}.png')
+    plt.close()
+    #This part of the function creates a line plot of vibration over time, adds a horizontal line for maximum vibration, and saves the plot as a PNG file named 'Vibration_Time_Plot_{i+1}.png', where {i} is the index of the turbine.
+
+for data, turbine_id in zip(data_list, turbine_ids):
+    Temp_Time_Plot(data, turbine_id)
+    Vib_Time_Plot(data, turbine_id)
+
+#This loop iterates over the list of turbine DataFrames, calling the Temp_Time_Plot and Vib_Time_Plot functions for each turbine's data. It generates and saves the temperature and vibration plots for each turbine, with the index i indicating the turbine number in the filenames.
+
+
+
+
+
 
 
 
