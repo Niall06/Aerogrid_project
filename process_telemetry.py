@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 #This imports all of the relevant libraries for the code to run.
 
-df = pd.read_csv('telemetry_data.csv')
+df = pd.read_csv('telemetry_data(in).csv')
 #This reads in the telemetry data from a CSV file and stores it in a pandas DataFrame called df.
 
 df = df[1:] # Remove the first row of the DataFrame
