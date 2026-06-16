@@ -106,6 +106,7 @@ def Temp_Time_Plot(data,i):
     plt.plot(data['timestamp'], data['temperature_c'], label='Temperature (°C)', color='blue')
     plt.axhline(y=avg_temp, color='orange', linestyle='--', label=f'Average Temp: {avg_temp:.2f} °C')
     plt.axhline(y=max_temp, color='red', linestyle='--', label=f'Max Temp: {max_temp:.2f} °C')
+    plt.axhline(y=av_temp_max, color='black', linestyle='--', label=f'Max Allowed Temp: {av_temp_max} °C')
     plt.title(f'Temperature vs Time, Turbine ID: {i}  ')
     plt.xlabel('Timestamp')
     plt.ylabel('Temperature (°C)')
@@ -122,12 +123,13 @@ def Vib_Time_Plot(data,i):
     plt.figure(figsize=(10, 6))
     plt.plot(data['timestamp'], data['vibration_mm_s'], label='Vibration (mm/s)', color='green')
     plt.axhline(y=max_vib, color='red', linestyle='--', label=f'Max Vibration: {max_vib:.2f} mm/s')
-    plt.title(f'Vibration vs Time, Turbine ID: {i+1}')
+    plt.axhline(y=vib_max, color='black', linestyle='--', label=f'Max Allowed Vibration: {vib_max} mm/s')
+    plt.title(f'Vibration vs Time, Turbine ID: {i}')
     plt.xlabel('Timestamp')
     plt.ylabel('Vibration (mm/s)')
     plt.legend()
     plt.grid()
-    plt.savefig(f'Vibration_Time_Plot_{i+1}.png')
+    plt.savefig(f'Vibration_Time_Plot_{i}.png')
     plt.close()
     #This part of the function creates a line plot of vibration over time, adds a horizontal line for maximum vibration, and saves the plot as a PNG file named 'Vibration_Time_Plot_{i+1}.png', where {i} is the index of the turbine.
 
